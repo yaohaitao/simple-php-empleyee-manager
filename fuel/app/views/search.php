@@ -51,6 +51,49 @@
         <th style="width:15%;">所属</th>
         <th style="width:40%;">操作</th>
     </tr>
+    <?php
+        /*
+         * $employees 这个变量是 Controller 传过来的，内容格式如下
+         * Array
+           (
+                [0] => Array
+                    (
+                        [employee_id] => 1
+                        [position_id] => 1
+                        [affiliation_id] => 1
+                        [name] => 湿答答
+                        [kana] => しだだ
+                        [position] => 老大
+                        [affiliation] => 1技
+                    )
+
+                [1] => Array
+                    (
+                        [employee_id] => 2
+                        [position_id] => 2
+                        [affiliation_id] => 2
+                        [name] => 离战书
+                        [kana] => りせんしょ
+                        [position] => 老二
+                        [affiliation] => 1技1科
+                    )
+
+            )
+        */
+        foreach ($employees as $employee) {
+            print '<tr>'.
+                '<td>'.$employee['name'].'</td>>'.
+                '<td>'.$employee['kana'].'</td>>'.
+                '<td>'.$employee['position'].'</td>>'.
+                '<td>'.$employee['affiliation'].'</td>>'.
+                '<td>'.
+                    '<button>修改</button>'.
+                    '<button>删除</button>'.
+                '</td>>'.
+                '</tr>';
+        }
+    ?>
+    <!-- 静态的内容不要了，换为动态的
     <tr>
         <td>哈哈</td>
         <td>はは</td>
@@ -61,15 +104,15 @@
             <button>删除</button>
         </td>
     </tr>
-
+    -->
 </table>
 </body>
 </html>
 
 <?php
-/**
- * Created by PhpStorm.
- * User: YaoHaitao
- * Date: 2017/10/16
- * Time: 下午2:01
- */
+///**
+// * Created by PhpStorm.
+// * User: YaoHaitao
+// * Date: 2017/10/16
+// * Time: 下午2:01
+// */

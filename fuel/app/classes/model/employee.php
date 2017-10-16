@@ -2,73 +2,46 @@
 /**
  * Created by PhpStorm.
  * User: YaoHaitao
- * Date: 2017/10/16
- * Time: 上午11:36
+ * Date: 2017/10/17
+ * Time: 上午12:10
  */
 
-class Model_Employee extends \Orm\Model {
+namespace Model;
 
-    protected static $_table_name = 't_employee';
+use Fuel\Core\DB;
+use Fuel\Core\Model;
 
-    protected static $_primary_key = array('employee_id');
-
-    protected static $_properties = array(
-        'employee_id',
-        'position_id' => array (
-            'data_type' => 'int',
-            'validation' => array('required'),
-        ),
-        'affiliation_id' => array (
-            'data_type' => 'int',
-            'validation' => array('required'),
-        ),
-        'name' => array (
-            'data_type' => 'varchar',
-            'validation' => array('required'),
-        ),
-        'kana' => array (
-            'data_type' => 'varchar',
-            'validation' => array('required'),
-        ),
-    ) ;
-    // 表示 Employee 属于 Position 与 Affiliation，在一对多关系中，多的一方用 belongs_to
-    protected static $_belongs_to = array(
-        // 关联的对象
-        'position' => array(
-            // 对应本表的哪一个字段
-            'key_from' => 'position_id',
-            // 对应哪一个 Model
-            'model_to' => 'Model_Position',
-            // 对应隶属表的哪一个字段
-            'key_to' => 'position_id',
-            // 是否关联保存
-            'cascade_save' => true,
-            // 是否关联删除
-            'cascade_delete' => false,
-        ),
-        'affiliation' => array(
-            'key_from' => 'affiliation_id',
-            'model_to' => 'Model_Affiliation',
-            'key_to' => 'affiliation_id',
-            'cascade_save' => true,
-            'cascade_delete' => false,
-        ),
-    );
+class Employee extends Model {
 
     /**
      * 根据 employee_id 查询员工所有信息
      * @param $employee_id
-     * @return 查询结果
+     * @return object
      */
     public static function get_employee($employee_id) {
-        return self::find($employee_id, array('related' => array('position', 'affiliation')));
+//        return self::find($employee_id, array('related' => array('position', 'affiliation')));
+        return DB::query("SELECT t_employee.*, t_position.`position` AS `position`, t_affiliation.affiliation AS affiliation 
+                        FROM t_employee
+                        LEFT JOIN t_position
+                        ON t_employee.position_id = t_position.position_id
+                        LEFT JOIN t_affiliation
+                        ON t_employee.affiliation_id = t_affiliation.affiliation_id
+                        WHERE employee_id = $employee_id")
+            ->execute();
     }
 
     /**
      * 查询所有员工所有信息
      */
     public static function list_employee() {
-        return self::find('all', array('related' => array('position', 'affiliation')));
+//        return self::find('all', array('related' => array('position', 'affiliation')));
+        return DB::query('SELECT t_employee.*, t_position.`position` AS `position`, t_affiliation.affiliation AS affiliation 
+                        FROM t_employee
+                        LEFT JOIN t_position
+                        ON t_employee.position_id = t_position.position_id
+                        LEFT JOIN t_affiliation
+                        ON t_employee.affiliation_id = t_affiliation.affiliation_id 
+        ')->execute();
     }
 
     /**
@@ -78,8 +51,9 @@ class Model_Employee extends \Orm\Model {
      */
     public static function search_employee($condition) {
 
-        $condition = '%'.$condition.'%';
+        $condition = '\'%'.$condition.'%\'';
 
+        /*
         $result = self::query()
             ->select('*')
             ->related('position')
@@ -90,36 +64,59 @@ class Model_Employee extends \Orm\Model {
             ->or_where('name', 'like', $condition)
             ->or_where('kana', 'like', $condition)
             ->get();
+        */
 
-        return $result;
+        return DB::query("SELECT t_employee.*, t_position.`position` AS `position`, t_affiliation.affiliation AS affiliation 
+                        FROM t_employee
+                        LEFT JOIN t_position
+                        ON t_employee.position_id = t_position.position_id
+                        LEFT JOIN t_affiliation
+                        ON t_employee.affiliation_id = t_affiliation.affiliation_id
+                        WHERE t_position.position LIKE $condition
+                        OR t_affiliation.affiliation LIKE $condition
+                        OR name LIKE $condition
+                        OR kana LIKE $condition
+        ")->execute();
     }
 
     /**
      * 添加员工信息
      * @param $employee_props: position_id, affiliation_id, name, kana
-     * @return bool 是否添加成功
+     * @return list list($insert_id, $rows_affected)
      */
     public static function insert_employee($employee_props) {
-        $new_employee = new Model_Employee($employee_props);
-        return $new_employee->save();
+//        $new_employee = new Model_Orm_Employee($employee_props);
+//        return $new_employee->save();
+        return DB::insert('t_employee')
+            ->set($employee_props)
+            ->execute();
     }
 
     /**
      * 更新员工信息
      * @param $employee_props: employee_id, position_id, affiliation_id, name, kana
-     * @return bool 是否添加成功
+     * @return Integer 修改的条数
      */
     public static function update_employee($employee_props) {
-        $employee = self::find($employee_props['employee_id']);
-        $employee->set($employee_props);
-        return $employee->save();
+//        $employee = self::find($employee_props['employee_id']);
+//        $employee->set($employee_props);
+//        return $employee->save();
+        return DB::update('t_employee')
+            ->set($employee_props)
+            ->where('employee_id', '=', $employee_props['employee_id'])
+            ->execute();
     }
 
     /**
      * 删除员工信息
+     * @param $employee_id
+     * @return Integer 删除的条数
      */
     public static function delete_emloyee($employee_id) {
-        $employee = self::find($employee_id);
-        return $employee->delete();
+//        $employee = self::find($employee_id);
+//        return $employee->delete();
+        return DB::delete('t_employee')
+            ->where('employee_id', '=', $employee_id)
+            ->execute();
     }
 }

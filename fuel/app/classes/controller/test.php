@@ -11,8 +11,12 @@ class Controller_Test extends \Fuel\Core\Controller {
     public function action_list_position() {
 
         $data = array();
-        $data['db_data'] = Model_Position::list_positions();
-
+        $data['db_data'] = Model_Orm_Position::list_positions();
+        /*
+         * $data
+         * key          value
+         * da_data      list_positions
+         */
         return \Fuel\Core\View::forge('test', $data);
     }
 
@@ -20,7 +24,7 @@ class Controller_Test extends \Fuel\Core\Controller {
     public function action_list_affiliation() {
 
         $data = array();
-        $data['db_data'] = Model_Affiliation::list_affiliation();
+        $data['db_data'] = Model_Orm_Affiliation::list_affiliation();
 
         return \Fuel\Core\View::forge('test', $data);
     }

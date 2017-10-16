@@ -6,7 +6,7 @@ class Presenter_Position extends Presenter {
 
     public function view() {
 
-        $this->positions = Model_Position::list_positions();
+        $this->positions = Model_Orm_Position::list_positions();
 
     }
 

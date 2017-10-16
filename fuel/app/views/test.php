@@ -7,6 +7,11 @@
  */
 
 print '<pre>';
+/*
+  * $data
+  * key          value
+  * db_data      list_positions
+  */
 print_r($db_data);
 print '</pre>';
 

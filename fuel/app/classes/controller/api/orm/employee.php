@@ -6,19 +6,16 @@
  * Time: 下午12:14
  */
 
-use Model\Employee;
-use Fuel\Core\Input;
-
-class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
+class Controller_Api_Orm_Employee extends \Fuel\Core\Controller_Rest {
 
     // 根据员工 ID 获取员工信息
     public function get_get_employee() {
 
-        $employee_id = Input::get('employee_id');
+        $employee_id = \Fuel\Core\Input::get('employee_id');
 
-        $employee = Employee::get_employee($employee_id);
+        $employee = Model_Orm_Employee::get_employee($employee_id);
 
-        if (! empty($employee)) {
+        if (isset($employee)) {
             return $this->response(array(
                 'state' => 1,
                 'message' => 'SUCCESS',
@@ -35,9 +32,9 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
     // 列出所有员工信息
     public function get_list_employee() {
 
-        $employees = Employee::list_employee();
+        $employees = Model_Orm_Employee::list_employee();
 
-        if (! empty($employees)) {
+        if (isset($employees)) {
             return $this->response(array(
                 'state' => 1,
                 'message' => 'SUCCESS',
@@ -54,9 +51,9 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
     // 根据条件查询员工
     public function get_search_employee() {
 
-        $condition = Input::get('condition');
+        $condition = \Fuel\Core\Input::get('condition');
 
-        $result = Employee::search_employee($condition);
+        $result = Model_Orm_Employee::search_employee($condition);
 
 
         if (! empty($result)) {
@@ -79,15 +76,15 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
         // position_id, affiliation_id, name, kana
 
         $employee_props = array(
-            'position_id' => Input::get('position_id'),
-            'affiliation_id' => Input::get('affiliation_id'),
-            'name' => Input::get('name'),
-            'kana' => Input::get('kana'),
+            'position_id' => \Fuel\Core\Input::get('position_id'),
+            'affiliation_id' => \Fuel\Core\Input::get('affiliation_id'),
+            'name' => \Fuel\Core\Input::get('name'),
+            'kana' => \Fuel\Core\Input::get('kana'),
         );
 
         $result = $this->check_props($employee_props);
 
-        if (! empty($result)) {
+        if (isset($result)) {
             return $this->response(array(
                 'state' => 0,
                 'message' => "$result is necessary.",
@@ -95,9 +92,9 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
             ));
         }
 
-        $result = Employee::insert_employee($employee_props);
+        $result = Model_Orm_Employee::insert_employee($employee_props);
 
-        if ($result[1] != 0) {
+        if ($result) {
             return $this->response(array(
                 'state' => 1,
                 'message' => 'employee insert successfully.',
@@ -116,11 +113,11 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
     public function get_update_employee() {
 
         $employee_props = array(
-            'employee_id' => Input::get('employee_id'),
-            'position_id' => Input::get('position_id'),
-            'affiliation_id' => Input::get('affiliation_id'),
-            'name' => Input::get('name'),
-            'kana' => Input::get('kana'),
+            'employee_id' => \Fuel\Core\Input::get('employee_id'),
+            'position_id' => \Fuel\Core\Input::get('position_id'),
+            'affiliation_id' => \Fuel\Core\Input::get('affiliation_id'),
+            'name' => \Fuel\Core\Input::get('name'),
+            'kana' => \Fuel\Core\Input::get('kana'),
         );
 
         if (empty($employee_props['employee_id'])) {
@@ -133,7 +130,7 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
 
         $result = $this->check_props($employee_props);
 
-        if (! empty($result)) {
+        if (isset($result)) {
             return $this->response(array(
                 'state' => 0,
                 'message' => "$result is necessary.",
@@ -141,9 +138,9 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
             ));
         }
 
-        $result = Employee::update_employee($employee_props);
+        $result = Model_Orm_Employee::update_employee($employee_props);
 
-        if ($result != 0) {
+        if ($result) {
             return $this->response(array(
                 'state' => 1,
                 'message' => 'employee update successfully.',
@@ -162,14 +159,14 @@ class Controller_Api_Employee extends \Fuel\Core\Controller_Rest {
     // 删除员工
     public function get_delete_employee() {
 
-        $employee_id = Input::get('employee_id');
+        $employee_id = \Fuel\Core\Input::get('employee_id');
 
-        $result = Employee::delete_emloyee($employee_id);
+        $result = Model_Orm_Employee::delete_emloyee($employee_id);
 
-        if ($result != 0) {
+        if ($result) {
             return $this->response(array(
                 'state' => 1,
-                'message' => "employee has been deleted.",
+                'message' => "employee id is $employee_id 's employee has been deleted .",
                 'data' => null,
             ));
         }
