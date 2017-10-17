@@ -56,7 +56,6 @@ class Controller_Guide extends \Fuel\Core\Controller
     public function action_delete()
     {
 
-
         // 从页面获取要删除的员工 ID
         $employee_id = Input::get('employee_id');
         // 如果指定了员工 ID 就删除员工
@@ -77,5 +76,47 @@ class Controller_Guide extends \Fuel\Core\Controller
         // $data['error_message'] = "获取员工 ID 失败！";
         // return View::forge('search', $data);
         Response::redirect(self::$path . 'index?code=0&message=获取员工 ID 失败！');
+    }
+
+    public function action_insert_page() {
+
+        $data = array();
+
+        // 获取职位列表
+        $positions = \Model\Position::list_positions()->as_array();
+        // 获取隶属列表
+        $affiliations = \Model\Affiliation::list_affiliation()->as_array();
+        // 将获取的数据放入 $data，然后传到页面
+        $data['positions'] = $positions;
+        $data['affiliations'] = $affiliations;
+        $data['message'] = Input::get('message');
+        $data['name'] = Input::get('name');
+        $data['kana'] = Input::get('kana');
+
+        return View::forge('insert', $data);
+    }
+
+    public function action_insert() {
+
+        $position_id = Input::get('position_id');
+        $affiliation_id = Input::get('affiliation_id');
+        $name = Input::get('name');
+        $kana = Input::get('kana');
+
+        $employee_props = array(
+            'position_id' => $position_id,
+            'affiliation_id' => $affiliation_id,
+            'name' => $name,
+            'kana' => $kana,
+        );
+
+        $result = Employee::insert_employee($employee_props);
+
+        // 如果结果为 0 ，肯定没插入成功
+        if ($result[1] == 0) {
+            Response::redirect(self::$path."insert_page?message=插入失败！&name=$name&kana=$kana");
+        }
+
+        Response::redirect(self::$path . "index?code=1&message=插入成功！");
     }
 }
