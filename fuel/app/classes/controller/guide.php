@@ -26,9 +26,14 @@ class Controller_Guide extends \Fuel\Core\Controller
                 'code' => $code,
                 'message' => $message
         );
-
+		
         // 显示全部员工
         $data['employees'] = Employee::list_employee()->as_array();
+        
+        if (count($data['employees']) == 0) {
+        	$data['message']['code'] = 0;
+        	$data['message']['message'] = $data['message']['message'].' 查询到 0 个员工！';
+        }
         return View::forge('search', $data);
     }
 

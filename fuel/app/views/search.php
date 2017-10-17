@@ -144,6 +144,7 @@
                     [position] => 老大
                     [affiliation] => 1技
                 )
+             $employee['name'] 
 
             [1] => Array
                 (
@@ -160,7 +161,7 @@
     */
     if ( ! empty($employees)) {
         foreach ($employees as $employee) {
-            $employee_id = $employee['employee_id'];
+//             $employee_id = $employee['employee_id'];
             print '<tr>'.
                 '<td>'.$employee['name'].'</td>'.
                 '<td>'.$employee['kana'].'</td>'.
@@ -168,7 +169,7 @@
                 '<td>'.$employee['affiliation'].'</td>'.
                 '<td>'.
                 '<button class="update_button">修改</button>'.
-                "<button class='delete_button' onclick=\"location.href='delete?employee_id=$employee_id'\">删除</button>".
+                '<button class="delete_button" onclick="location.href=\'delete?employee_id='.$employee['employee_id'].'\'">删除</button>'.
                 '</td>'.
                 '</tr>';
         }
@@ -189,4 +190,6 @@
 </table>
 </body>
 </html>
+
+
 
