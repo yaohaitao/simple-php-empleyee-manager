@@ -112,7 +112,7 @@ class Employee extends Model {
      * @param $employee_id
      * @return Integer 删除的条数
      */
-    public static function delete_emloyee($employee_id) {
+    public static function delete_employee($employee_id) {
 //        $employee = self::find($employee_id);
 //        return $employee->delete();
         return DB::delete('t_employee')
