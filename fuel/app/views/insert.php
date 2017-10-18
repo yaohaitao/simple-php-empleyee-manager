@@ -41,27 +41,28 @@
 </head>
 <body>
     <?php
-        if (! empty($message)) {
-            print "<p class='show_error'>$message</p>";
-        }
+//         if (! empty($message)) {
+//             print "<p class='show_error'>$message</p>";
+//         }
     ?>
     <div class="container">
-        <form action="insert">
+        <form action="/guide/insert" method="get">
 
             <label for="name">姓名</label>
-            <input type="text" id="name" name="name" placeholder="请输入姓名.." required value="<?php if (! empty($name)){print $name;} ?>">
+            <input type="text" id="name" name="name" placeholder="请输入姓名.." required >
 
             <label for="kana">仮名</label>
-            <input type="text" id="kana" name="kana" placeholder="请输入假名.." required value="<?php if (! empty($kana)){print $kana;} ?>">
+            <input type="text" id="kana" name="kana" placeholder="请输入假名.." required >
 
             <label for="position">职位</label>
             <select id="position" name="position_id">
                 <?php
                     if (! empty($positions)) {
                         foreach ($positions as $position) {
-                            $position_id = $position['position_id'];
-                            $position_name = $position['position'];
-                            print "<option value='$position_id'>$position_name</option>";
+                            // $position_id = $position['position_id'];
+                           	// $position_name = $position['position'];
+                           	// print "<option value='$position_id'>$position_name</option>";
+                            print '<option value="'.$position['position_id'].'">'.$position['position'].'</option>';
                         }
                     }
                 ?>

@@ -19,21 +19,22 @@ class Controller_Guide extends \Fuel\Core\Controller
 
         $data = array();
 
-        $code = Input::get('code');
-        $message = Input::get('message');
-
-        $data['message'] = array(
-                'code' => $code,
-                'message' => $message
-        );
-		
+//         $code = Input::get('code');
+        
+        $data['message'] = Input::get('message');
+        
         // 显示全部员工
         $data['employees'] = Employee::list_employee()->as_array();
+//         if(count($data['employees'])!=0){
+//         	$data['message']="";
+  
+//         }        
+//         if (count($data['employees']) == 0) {
+//         	$data['message']['code'] = 0;
+//         	$data['message']['message'] = $data['message']['message'].' 查询到 0 个员工！';
+//         }
+	
         
-        if (count($data['employees']) == 0) {
-        	$data['message']['code'] = 0;
-        	$data['message']['message'] = $data['message']['message'].' 查询到 0 个员工！';
-        }
         return View::forge('search', $data);
     }
 
@@ -54,10 +55,20 @@ class Controller_Guide extends \Fuel\Core\Controller
         }
         // 没有传来的话显示错误
         // $data['error_message'] = '请输入搜索条件！';
-        Response::redirect(self::$path . 'index?code=0&message=请输入搜索条件');
+        Response::redirect(self::$path . 'index');
         // return View::forge('search', $data);
     }
 
+    public function action_update(){
+		//第一步，获取id
+		$employee_id =Input::get('employee_id');
+		//第二步，用id去查找对应员工的所有的信息
+		//第三步，把信息整合到数组
+		//第四部，把信息带到更新页面
+  
+    }
+    
+    
     public function action_delete()
     {
 
@@ -67,20 +78,20 @@ class Controller_Guide extends \Fuel\Core\Controller
         if (!empty($employee_id)) {
             $result = Employee::delete_employee($employee_id);
             // 上面的方法会返回删除条数，如果删除条数为 0，就说明删除失败了
-            if ($result == 0) {
+//             if ($result == 0) {
                 // $data['error_message'] = "删除失败！";
                 // return View::forge('search', $data);
-                Response::redirect(self::$path . 'index?code=0&message=删除失败！');
-            }
+//                 Response::redirect(self::$path . 'index');
+//             }
             // 如果返回的删除条数不为 0，就说明删除成功
             // $data['message'] = "删除成功！员工ID：$employee_id";
             // return View::forge('search', $data);
-            Response::redirect(self::$path . "index?code=1&message=删除成功！员工ID：{$employee_id} ！");
+//             Response::redirect(self::$path . "index");
         }
         // 没有从页面获取到员工，把错误信息返回
         // $data['error_message'] = "获取员工 ID 失败！";
         // return View::forge('search', $data);
-        Response::redirect(self::$path . 'index?code=0&message=获取员工 ID 失败！');
+        Response::redirect(self::$path . 'index');
     }
 
     public function action_insert_page() {
@@ -94,9 +105,9 @@ class Controller_Guide extends \Fuel\Core\Controller
         // 将获取的数据放入 $data，然后传到页面
         $data['positions'] = $positions;
         $data['affiliations'] = $affiliations;
-        $data['message'] = Input::get('message');
-        $data['name'] = Input::get('name');
-        $data['kana'] = Input::get('kana');
+//         $data['message'] = Input::get('message');
+//         $data['name'] = Input::get('name');
+//         $data['kana'] = Input::get('kana');
 
         return View::forge('insert', $data);
     }
@@ -119,9 +130,9 @@ class Controller_Guide extends \Fuel\Core\Controller
 
         // 如果结果为 0 ，肯定没插入成功
         if ($result[1] == 0) {
-            Response::redirect(self::$path."insert_page?message=插入失败！&name=$name&kana=$kana");
+            Response::redirect(self::$path."insert_page");
         }
 
-        Response::redirect(self::$path . "index?code=1&message=插入成功！");
+        Response::redirect(self::$path . "index");
     }
 }

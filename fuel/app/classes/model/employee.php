@@ -53,19 +53,6 @@ class Employee extends Model {
 
         $condition = '\'%'.$condition.'%\'';
 
-        /*
-        $result = self::query()
-            ->select('*')
-            ->related('position')
-            ->related('affiliation')
-            ->where('employee_id', 'like', $condition)
-            ->or_where('position.position', 'like', $condition)
-            ->or_where('affiliation.affiliation', 'like', $condition)
-            ->or_where('name', 'like', $condition)
-            ->or_where('kana', 'like', $condition)
-            ->get();
-        */
-
         return DB::query("SELECT t_employee.*, t_position.`position` AS `position`, t_affiliation.affiliation AS affiliation 
                         FROM t_employee
                         LEFT JOIN t_position
@@ -85,8 +72,6 @@ class Employee extends Model {
      * @return list list($insert_id, $rows_affected)
      */
     public static function insert_employee($employee_props) {
-//        $new_employee = new Model_Orm_Employee($employee_props);
-//        return $new_employee->save();
         return DB::insert('t_employee')
             ->set($employee_props)
             ->execute();
