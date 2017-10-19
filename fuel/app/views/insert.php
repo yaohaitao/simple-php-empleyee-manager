@@ -40,11 +40,6 @@
     </style>
 </head>
 <body>
-    <?php
-//         if (! empty($message)) {
-//             print "<p class='show_error'>$message</p>";
-//         }
-    ?>
     <div class="container">
         <form action="/guide/insert" method="get">
 
@@ -59,9 +54,6 @@
                 <?php
                     if (! empty($positions)) {
                         foreach ($positions as $position) {
-                            // $position_id = $position['position_id'];
-                           	// $position_name = $position['position'];
-                           	// print "<option value='$position_id'>$position_name</option>";
                             print '<option value="'.$position['position_id'].'">'.$position['position'].'</option>';
                         }
                     }
@@ -73,15 +65,10 @@
                 <?php
                 if (! empty($affiliations)) {
                     foreach ($affiliations as $affiliation) {
-                        $affiliation_id = $affiliation['affiliation_id'];
-                        $affiliation_name = $affiliation['affiliation'];
-                        print "<option value='$affiliation_id'>$affiliation_name</option>";
+                        print '<option value="'. $affiliation['affiliation_id'] .'">'. $affiliation['affiliation'] .'</option>';
                     }
                 }
                 ?>
-                <!--<option value="australia">北京</option>-->
-                <!--<option value="canada">上海</option>-->
-                <!--<option value="usa">厦门</option>-->
             </select>
 
             <input type="submit" value="提交">

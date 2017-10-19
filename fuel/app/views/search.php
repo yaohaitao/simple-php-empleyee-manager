@@ -94,13 +94,6 @@
             border: 2px solid #f44336;
         }
 
-/*         .show_error { */
-/*             color: red; */
-/*         } */
-
-/*         .show_message { */
-/*             color: green; */
-/*         } */
 
     </style>
 </head>
@@ -112,18 +105,7 @@
 <button class="button" onclick="location.href='index';">社員情報一覧</button>
 <?php
 	if(! empty($employees)) {
-	
-//     if (! empty($message)) {
-//         $code = $message['code'];
-//         $message = $message['message'];
-//         if ($code == 1) {
-//             print "<p class='show_message'>$message</p>";
-//         } else {
-//             print "<p class='show_error'>$message</p>";
-//         }
-//     }
 ?>
-
 <table id="result_table">
     <tr class="header">
         <th style="width:15%;">姓名</th>
@@ -133,37 +115,7 @@
         <th style="width:40%;">操作</th>
     </tr>
     <?php
-    /*
-     * $employees 这个变量是 Controller 传过来的，内容格式如下
-     * Array
-       (
-            [0] => Array
-                (
-                    [employee_id] => 1
-                    [position_id] => 1
-                    [affiliation_id] => 1
-                    [name] => 湿答答
-                    [kana] => しだだ
-                    [position] => 老大
-                    [affiliation] => 1技
-                ) 
-
-            [1] => Array
-                (
-                    [employee_id] => 2
-                    [position_id] => 2
-                    [affiliation_id] => 2
-                    [name] => 离战书
-                    [kana] => りせんしょ
-                    [position] => 老二
-                    [affiliation] => 1技1科
-                )
-
-        )
-    */
-//     if ( ! empty($employees)) {
         foreach ($employees as $employee) {
-//             $employee_id = $employee['employee_id'];
             print '<tr>'.
                 '<td>'.$employee['name'].'</td>'.
                 '<td>'.$employee['kana'].'</td>'.
@@ -171,27 +123,11 @@
                 '<td>'.$employee['affiliation'].'</td>'.
                 '<td>'.
                 '<button class="update_button" onclick="location.href=\'update_page?employee_id='. $employee['employee_id'] .'\'">修改</button>'.
-//                 '<button class="delete_button" onclick="location.href=\'/yht/public/index.php/guide/delete?employee_id='.$employee['employee_id'].'\'">删除</button>'.
-				'<button class="delete_button" onclick="location.href=\'delete?employee_id='. $employee['employee_id'] .'\'">削除</button>'.
+                '<button class="delete_button" onclick="location.href=\'delete?employee_id='. $employee['employee_id'] .'\'">削除</button>'.
                 '</td>'.
-            
                 '</tr>';
         }
-//     }
-    ?>
-    <!-- 静态的内容不要了，换为动态的
-    <tr>
-        <td>哈哈</td>
-        <td>はは</td>
-        <td>老大</td>
-        <td>1技</td>
-        <td>
-            <button>修改</button>
-            <button>删除</button>
-        </td>
-    </tr>
-    -->
-    
+        ?>
 </table>
 <?php
 	} else { 

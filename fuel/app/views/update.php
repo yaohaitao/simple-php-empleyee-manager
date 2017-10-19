@@ -47,6 +47,7 @@
     ?>
     <div class="container">
         <form action="update" method="get">
+            <input type="hidden" name="employee_id" value="<?php print $employees[0]['employee_id']; ?>">
 
             <label for="name">姓名</label>
             <input type="text" id="name" name="name" placeholder="请输入姓名.." required value="<?php print $employees[0]['name']; ?>">
