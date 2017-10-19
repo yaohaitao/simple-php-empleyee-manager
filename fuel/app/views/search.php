@@ -59,7 +59,7 @@
             background-color: #008CBA;
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 8px 14px;
             text-align: center;
             text-decoration: none;
             display: inline-block;
@@ -78,7 +78,7 @@
             background-color: #f44336;
             color: white;
             border: none;
-            padding: 12px 28px;
+            padding: 8px 14px;
             margin-left: 5%;
             text-align: center;
             text-decoration: none;
@@ -109,15 +109,17 @@
 ?>
 <table id="result_table">
     <tr class="header">
+        <th style="width:10%;">工号</th>
         <th style="width:15%;">姓名</th>
         <th style="width:15%;">假名</th>
         <th style="width:15%;">职位</th>
         <th style="width:15%;">所属</th>
-        <th style="width:40%;">操作</th>
+        <th style="width:30%;">操作</th>
     </tr>
     <?php
         foreach ($employees as $employee) {
             print '<tr>'.
+                '<td>'.$employee['employee_id'].'</td>'.
                 '<td>'.$employee['name'].'</td>'.
                 '<td>'.$employee['kana'].'</td>'.
                 '<td>'.$employee['position'].'</td>'.

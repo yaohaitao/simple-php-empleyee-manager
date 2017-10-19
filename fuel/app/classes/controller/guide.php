@@ -159,7 +159,8 @@ class Controller_Guide extends \Fuel\Core\Controller
             // 如果插入失败，跳到插入页面
             Response::redirect("index.php/guide/insert_page");
         }
-        // 如果插入成功，跳到主页
-        Response::redirect("index.php/guide/index");
+        // 如果插入成功，通过上面 result 返回的主键，查询相关的信息，然后跳到添加完成页面
+        $employee = Employee::get_employee($result[0])->as_array()[0];
+        return View::forge('insert_complete',$employee);
     }
 }

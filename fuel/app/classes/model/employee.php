@@ -40,7 +40,8 @@ class Employee extends Model {
                         LEFT JOIN t_position
                         ON t_employee.position_id = t_position.position_id
                         LEFT JOIN t_affiliation
-                        ON t_employee.affiliation_id = t_affiliation.affiliation_id 
+                        ON t_employee.affiliation_id = t_affiliation.affiliation_id
+                        ORDER BY employee_id
         ')->execute();
     }
 
