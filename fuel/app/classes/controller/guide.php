@@ -59,13 +59,21 @@ class Controller_Guide extends \Fuel\Core\Controller
         // return View::forge('search', $data);
     }
 
-    public function action_update(){
+    public function action_update_page(){
 		//第一步，获取id
 		$employee_id =Input::get('employee_id');
 		//第二步，用id去查找对应员工的所有的信息
+        $employees = Employee::get_employee($employee_id)->as_array();
+        // 获取职位列表
+        $positions = \Model\Position::list_positions()->as_array();
+        // 获取隶属列表
+        $affiliations = \Model\Affiliation::list_affiliation()->as_array();
 		//第三步，把信息整合到数组
+        $data['employees'] = $employees;
+        $data['positions'] = $positions;
+        $data['affiliations'] = $affiliations;
 		//第四部，把信息带到更新页面
-  
+        return View::forge('update', $data);
     }
     
     

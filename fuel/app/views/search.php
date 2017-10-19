@@ -170,9 +170,9 @@
                 '<td>'.$employee['position'].'</td>'.
                 '<td>'.$employee['affiliation'].'</td>'.
                 '<td>'.
-                '<button class="update_button" onclick="location.href=\'update?employee_id='.$employee['employee_id'].'\'">修改</button>'.
+                '<button class="update_button" onclick="location.href=\'update_page?employee_id='. $employee['employee_id'] .'\'">修改</button>'.
 //                 '<button class="delete_button" onclick="location.href=\'/yht/public/index.php/guide/delete?employee_id='.$employee['employee_id'].'\'">删除</button>'.
-				'<button class="delete_button" onclick="location.href=\'delete?employee_id='.$employee['employee_id'].'\'">削除</button>'.
+				'<button class="delete_button" onclick="location.href=\'delete?employee_id='. $employee['employee_id'] .'\'">削除</button>'.
                 '</td>'.
             
                 '</tr>';
