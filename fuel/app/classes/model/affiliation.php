@@ -19,4 +19,11 @@ class Affiliation extends Model {
     public static function list_affiliation() {
         return DB::query('SELECT * FROM t_affiliation')->execute();
     }
+
+    public static function get_affiliation($affiliation_id) {
+        return DB::query("SELECT *
+                        FROM t_affiliation
+                        WHERE affiliation_id = $affiliation_id")
+            ->execute();
+    }
 }

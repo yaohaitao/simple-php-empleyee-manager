@@ -40,21 +40,26 @@
     </style>
 </head>
 <body>
+    <a style="margin-left: 45%" href="index">社員情報一覧</a>
     <div class="container">
-        <form action="/guide/insert" method="get">
+        <form action="insert_confirm" method="get">
 
             <label for="name">姓名</label>
-            <input type="text" id="name" name="name" placeholder="请输入姓名.." required >
+            <input type="text" id="name" name="name" placeholder="请输入姓名.." required value="<?php if (! empty($name)) { print $name; } ?>">
 
             <label for="kana">仮名</label>
-            <input type="text" id="kana" name="kana" placeholder="请输入假名.." required >
+            <input type="text" id="kana" name="kana" placeholder="请输入假名.." required value="<?php if (! empty($kana)) { print $kana; } ?>">
 
             <label for="position">职位</label>
             <select id="position" name="position_id">
                 <?php
                     if (! empty($positions)) {
                         foreach ($positions as $position) {
-                            print '<option value="'.$position['position_id'].'">'.$position['position'].'</option>';
+                            if (! empty($position_id) && $position_id == $position['position_id']) {
+                                print '<option selected="selected" value="' . $position['position_id'] . '">' . $position['position'] . '</option>';
+                            } else {
+                                print '<option value="' . $position['position_id'] . '">' . $position['position'] . '</option>';
+                            }
                         }
                     }
                 ?>
@@ -65,7 +70,11 @@
                 <?php
                 if (! empty($affiliations)) {
                     foreach ($affiliations as $affiliation) {
-                        print '<option value="'. $affiliation['affiliation_id'] .'">'. $affiliation['affiliation'] .'</option>';
+                        if (! empty($affiliation_id) && $affiliation_id == $affiliation['affiliation_id']){
+                            print '<option selected="selected" value="'. $affiliation['affiliation_id'] .'">'. $affiliation['affiliation'] .'</option>';
+                        } else {
+                            print '<option value="'. $affiliation['affiliation_id'] .'">'. $affiliation['affiliation'] .'</option>';
+                        }
                     }
                 }
                 ?>

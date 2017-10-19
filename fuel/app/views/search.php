@@ -102,7 +102,8 @@
 <!-- 给搜索按钮添加功能：使用 onclick 属性，该属性的意思是点击后会发生什么，属性中值是 JavaScript 语句，意思是要进行页面跳转。-->
 <button class="button" onclick="location.href='search?condition=' + document.getElementById('search_input').value;">搜索</button>
 <button class="button" onclick="location.href='insert_page';">添加</button>
-<button class="button" onclick="location.href='index';">社員情報一覧</button>
+<!--<button class="button" onclick="location.href='index';">社員情報一覧</button>-->
+<a href="index">社員情報一覧</a>
 <?php
 	if(! empty($employees)) {
 ?>

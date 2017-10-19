@@ -20,4 +20,11 @@ class Position extends Model {
         return DB::query('SELECT * FROM t_position')->execute();
     }
 
+    public static function get_position($position_id) {
+        return DB::query("SELECT *
+                        FROM t_position
+                        WHERE position_id = $position_id")
+            ->execute();
+    }
+
 }
