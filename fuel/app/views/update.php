@@ -47,7 +47,7 @@
     ?>
     <a style="margin-left: 45%" href="index">社員情報一覧</a>
     <div class="container">
-        <form action="update" method="get">
+        <form action="update_confirm" method="get">
             <input type="hidden" name="employee_id" value="<?php print $employees[0]['employee_id']; ?>">
 
             <label for="name">姓名</label>

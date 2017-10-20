@@ -60,8 +60,28 @@ class Controller_Guide extends \Fuel\Core\Controller
     public function action_update_page(){
         //第一步，获取id
         $employee_id =Input::get('employee_id');
-        //第二步，用id去查找对应员工的所有的信息
-        $employees = Employee::get_employee($employee_id);
+        /* 第二步获取信息现在分两种情况，第一种是从 index 直接点编辑进来，这个时候只会传来 employee_id，
+           第二种是通过 update_confirm 这个页面的重新编辑这个按钮进来，这个时候除了 employee_id，
+           还有 name，kana 等信息。
+        */
+        $position_id = Input::get('position_id');
+        $affiliation_id = Input::get('affiliation_id');
+        $name = Input::get('name');
+        $kana = Input::get('kana');
+        // 判断是否可以从页面取到 name 这些值，如果取到，说明就是上述第二种情况
+        if (!empty($name) && !empty($kana) && !empty($position_id) && !empty($affiliation_id)) {
+            $employees = array(array(
+                'employee_id' => $employee_id,
+                'position_id' => $position_id,
+                'affiliation_id' => $affiliation_id,
+                'name' => $name,
+                'kana' => $kana,
+            ));
+        }
+        // 如果取不到则是第一种情况
+        else {
+            $employees = Employee::get_employee($employee_id);
+        }
         // 获取职位列表
         $positions = \Model\Position::list_positions()->as_array();
         // 获取隶属列表
@@ -71,8 +91,32 @@ class Controller_Guide extends \Fuel\Core\Controller
         $data['employees'] = $employees;
         $data['positions'] = $positions;
         $data['affiliations'] = $affiliations;
-        //第四部，把信息带到更新页面
+        //第四部，把信息带到更新确认页面
         return View::forge('update', $data);
+    }
+
+    public function action_update_confirm() {
+        // 获取表单用 get 方式提交上来的员工信息
+        $employee_id = Input::get('employee_id');
+        $position_id = Input::get('position_id');
+        $affiliation_id = Input::get('affiliation_id');
+        $name = Input::get('name');
+        $kana = Input::get('kana');
+        $affiliation = Affiliation::get_affiliation($affiliation_id)[0]['affiliation'];
+        $position = Position::get_position($position_id)[0]['position'];
+        // 将员工信息封装至名叫 $employee_props 的数组中
+        $employee_props = array(
+            'employee_id' => $employee_id,
+            'position_id' => $position_id,
+            'position' => $position,
+            'affiliation_id' => $affiliation_id,
+            'affiliation' => $affiliation,
+            'name' => $name,
+            'kana' => $kana,
+        );
+        // 将页面跳到 views/insert_confirm.php，并将数据带过去
+        return View::forge('update_confirm', $employee_props);
+
     }
 
     public function action_update() {
@@ -92,8 +136,9 @@ class Controller_Guide extends \Fuel\Core\Controller
         );
         // 将员工信息插入数据库表，并把返回的结果赋值给 $result，该结果表示更新条数
         $result = Employee::update_employee($employee_props);
-        // 更新完成后跳到主页
-        Response::redirect("index.php/guide/index");
+        // 更新完成后跳到更新完成页面
+        $employee = Employee::get_employee($employee_id)->as_array()[0];
+        return View::forge('update_complete',$employee);
     }
 
     public function action_insert_page() {
@@ -108,7 +153,7 @@ class Controller_Guide extends \Fuel\Core\Controller
         $data['affiliations'] = $affiliations;
         // 如果是从确认页面跳过来的，则会带着 name、kana 等数据
         // 获取表单用 get 方式提交上来的员工信息
-        $data['positions_id'] = Input::get('position_id');
+        $data['position_id'] = Input::get('position_id');
         $data['affiliation_id'] = Input::get('affiliation_id');
         $data['name'] = Input::get('name');
         $data['kana'] = Input::get('kana');

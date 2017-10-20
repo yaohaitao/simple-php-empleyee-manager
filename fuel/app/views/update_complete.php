@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>添加完成</title>
+    <title>编辑完成</title>
 </head>
 <body>
 
-<p>添加完成！</p>
+<p>编辑完成！</p>
 
 <p>姓名：<?php print $name ?></p>
 
@@ -18,6 +18,6 @@
 
 <button onclick="location.href='index'">社員情報一覧</button>
 
-<button onclick="location.href='insert_page'">继续添加</button>
+<!--<button onclick="location.href='insert_page'">继续添加</button>-->
 
 </body>
