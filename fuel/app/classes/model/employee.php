@@ -26,7 +26,8 @@ class Employee extends Model {
                         ON t_employee.position_id = t_position.position_id
                         LEFT JOIN t_affiliation
                         ON t_employee.affiliation_id = t_affiliation.affiliation_id
-                        WHERE employee_id = $employee_id")
+                        WHERE employee_id = $employee_id
+        				AND is_deleted = 0")
             ->execute();
     }
 
@@ -41,7 +42,8 @@ class Employee extends Model {
                         ON t_employee.position_id = t_position.position_id
                         LEFT JOIN t_affiliation
                         ON t_employee.affiliation_id = t_affiliation.affiliation_id
-                        ORDER BY employee_id
+                        WHERE is_deleted = 0
+        				ORDER BY employee_id		
         ')->execute();
     }
 
@@ -64,6 +66,7 @@ class Employee extends Model {
                         OR t_affiliation.affiliation LIKE $condition
                         OR name LIKE $condition
                         OR kana LIKE $condition
+        				AND is_deleted = 0
         ")->execute();
     }
 
@@ -73,6 +76,7 @@ class Employee extends Model {
      * @return list list($insert_id, $rows_affected)
      */
     public static function insert_employee($employee_props) {
+    	$employee_props['is_deleted'] = 0;
         return DB::insert('t_employee')
             ->set($employee_props)
             ->execute();
@@ -101,8 +105,12 @@ class Employee extends Model {
     public static function delete_employee($employee_id) {
 //        $employee = self::find($employee_id);
 //        return $employee->delete();
-        return DB::delete('t_employee')
-            ->where('employee_id', '=', $employee_id)
-            ->execute();
+//         return DB::delete('t_employee')
+//             ->where('employee_id', '=', $employee_id)
+//             ->execute();
+        return DB::update('t_employee')
+        ->value('is_deleted', 1)
+        ->where('employee_id', '=', $employee_id)
+        ->execute();
     }
 }

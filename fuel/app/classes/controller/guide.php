@@ -168,6 +168,7 @@ class Controller_Guide extends \Fuel\Core\Controller
         $name = Input::get('name');
         $kana = Input::get('kana');
         $affiliation = Affiliation::get_affiliation($affiliation_id)[0]['affiliation'];
+        // Array => 记录1 记录2 记录3   记录1 => position_id position
         $position = Position::get_position($position_id)[0]['position'];
         // 将员工信息封装至名叫 $employee_props 的数组中
         $employee_props = array(
