@@ -101,7 +101,7 @@
 <input type="text" id="search_input" placeholder="搜索..." value="<?php if (! empty($condition)){print $condition;} ?>">
 <!-- 给搜索按钮添加功能：使用 onclick 属性，该属性的意思是点击后会发生什么，属性中值是 JavaScript 语句，意思是要进行页面跳转。-->
 <button class="button" onclick="location.href='search?condition=' + document.getElementById('search_input').value;">搜索</button>
-<button class="button" onclick="location.href='insert_page';">添加</button>
+<button class="button" onclick="location.href='regist?mark=insert';">添加</button>
 <!--<button class="button" onclick="location.href='index';">社員情報一覧</button>-->
 <a href="index">社員情報一覧</a>
 <?php
@@ -125,7 +125,7 @@
                 '<td>'.$employee['position'].'</td>'.
                 '<td>'.$employee['affiliation'].'</td>'.
                 '<td>'.
-                '<button class="update_button" onclick="location.href=\'update_page?employee_id='. $employee['employee_id'] .'\'">编辑</button>'.
+                '<button class="update_button" onclick="location.href=\'regist?mark=update&employee_id='. $employee['employee_id'] .'\'">编辑</button>'.
                 '<button class="delete_button" onclick="location.href=\'delete?employee_id='. $employee['employee_id'] .'\'">削除</button>'.
                 '</td>'.
                 '</tr>';

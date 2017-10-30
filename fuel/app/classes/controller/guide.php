@@ -141,6 +141,109 @@ class Controller_Guide extends \Fuel\Core\Controller
         return View::forge('update_complete',$employee);
     }
 
+    
+    public function action_regist(){
+    	
+    	$mark = Input::get('mark');
+    	
+    	// 声明数组
+    	$data = array();
+    	// 获取职位列表
+    	$positions = \Model\Position::list_positions()->as_array();
+    	// 获取隶属列表
+    	$affiliations = \Model\Affiliation::list_affiliation()->as_array();
+    	// 将获取的数据放入 $data
+    	$data['positions'] = $positions;
+    	$data['affiliations'] = $affiliations;
+    	
+    	if ($mark == 'insert') {
+    		
+    		$data['position_id'] = Input::get('position_id');
+    		$data['affiliation_id'] = Input::get('affiliation_id');
+    		$data['name'] = Input::get('name');
+    		$data['kana'] = Input::get('kana');
+    		
+    		$data['title'] = '增加';
+//     		$data['action'] = 'insert_confirm';
+//     		$data['hidden'] = '';
+    		$data['position_condition'] = !empty(Input::get('position_id'));
+    		$data['affiliation_condition'] = !empty(Input::get('affiliation_id'));
+    		
+    		return View::forge('regist', $data);
+    	} else if ($mark == 'update') {
+    		
+    		 //第一步，获取id
+	        $employee_id =Input::get('employee_id');
+	        /* 第二步获取信息现在分两种情况，第一种是从 index 直接点编辑进来，这个时候只会传来 employee_id，
+	           第二种是通过 update_confirm 这个页面的重新编辑这个按钮进来，这个时候除了 employee_id，
+	           还有 name，kana 等信息。
+	        */
+	        $position_id = Input::get('position_id');
+	        $affiliation_id = Input::get('affiliation_id');
+	        $name = Input::get('name');
+	        $kana = Input::get('kana');
+	        // 判断是否可以从页面取到 name 这些值，如果取到，说明就是上述第二种情况
+	        if (!empty($name) && !empty($kana) && !empty($position_id) && !empty($affiliation_id)) {
+	        	$data['employee_id'] = $employee_id;
+	        	$data['position_id'] = $position_id;
+	        	$data['affiliation_id'] = $affiliation_id;
+	        	$data['name'] = $name;
+	        	$data['kana'] = $kana;
+	        }
+	        // 如果取不到则是第一种情况
+	        else {
+	            $employees = Employee::get_employee($employee_id);
+	            $data['employee_id'] = $employees[0]['employee_id'];
+	            $data['position_id'] = $employees[0]['position_id'];
+	            $data['affiliation_id'] = $employees[0]['affiliation_id'];
+	            $data['name'] = $employees[0]['name'];
+	            $data['kana'] = $employees[0]['kana'];
+	        }
+	        
+	        
+	        $data['title'] = '编辑';
+// 	        $data['action'] = 'update_confirm';
+// 	        $data['hidden'] = '<input type="hidden" name="employee_id" value="'. $employee_id .'">';
+	        $data['position_condition'] = true;
+	        $data['affiliation_condition'] = true;
+	        
+	        
+	        return View::forge('regist', $data);
+    	}
+    }
+    
+    public function action_confirm() {
+
+    	$mark = Input::get('mark');
+    	$position_id = Input::get('position_id');
+    	$affiliation_id = Input::get('affiliation_id');
+    	$name = Input::get('name');
+    	$kana = Input::get('kana');
+    	$affiliation = Affiliation::get_affiliation($affiliation_id)[0]['affiliation'];
+    	$position = Position::get_position($position_id)[0]['position'];
+    	// 将员工信息封装至名叫 $employee_props 的数组中
+    	$data = array(
+    			'position_id' => $position_id,
+    			'position' => $position,
+    			'affiliation_id' => $affiliation_id,
+    			'affiliation' => $affiliation,
+    			'name' => $name,
+    			'kana' => $kana,
+    	);
+
+
+    	if ($mark == 'update') {
+    		$employee_id = Input::get('employee_id');
+    		$data['employee_id'] = Input::get('employee_id');
+    		$data['data'] = 'mark=update&employe_id=' . $employee_id . '&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id;
+    	} else if ($mark == 'insert') {
+    		$data['data'] = 'mark=insert' . '&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id;
+    	}
+    	
+    	return View::forge('confirm', $data);
+    	
+    }
+    
     public function action_insert_page() {
         // 声明数组
         $data = array();

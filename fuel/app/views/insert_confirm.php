@@ -16,7 +16,7 @@
 
 <p>隶属：<?php print $affiliation ?></p>
 
-<button onclick="location.href='insert_page?<?php print 'name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id?>'">修改</button>
+<button onclick="location.href='insert_page?<?php print 'mark=insert&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id?>'">修改</button>
 
 <button onclick="location.href='insert?<?php print 'name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id?>'">确认添加</button>
 
