@@ -58,7 +58,7 @@
 <body>
     <a style="margin-left: 45%" href="index">社員情報一覧</a>
     <div class="container">
-        <form action="confirm" method="get">
+        <form action="confirm" method="post">
         
             <label for="name">姓名</label>
             <input type="text" id="name" name="name" placeholder="请输入姓名.." required value="<?php if (! empty($name)) { print $name; } ?>">
