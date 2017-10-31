@@ -235,13 +235,44 @@ class Controller_Guide extends \Fuel\Core\Controller
     	if ($mark == 'update') {
     		$employee_id = Input::get('employee_id');
     		$data['employee_id'] = Input::get('employee_id');
-    		$data['data'] = 'mark=update&employe_id=' . $employee_id . '&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id;
+    		$data['data'] = 'mark=update&employee_id=' . $employee_id . '&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id;
     	} else if ($mark == 'insert') {
     		$data['data'] = 'mark=insert' . '&name='. $name . '&kana=' . $kana . '&position_id=' . $position_id . '&affiliation_id=' . $affiliation_id;
     	}
     	
     	return View::forge('confirm', $data);
     	
+    }
+    
+    public function action_done() {
+    	
+    	$mark = Input::get('mark');
+    	// 获取表单用 get 方式提交上来的员工信息
+    	$position_id = Input::get('position_id');
+    	$affiliation_id = Input::get('affiliation_id');
+    	$name = Input::get('name');
+    	$kana = Input::get('kana');
+    	// 将员工信息封装至名叫 $employee_props 的数组中
+    	$employee_props = array(
+    			'position_id' => $position_id,
+    			'affiliation_id' => $affiliation_id,
+    			'name' => $name,
+    			'kana' => $kana,
+    	);
+    	
+    	if ($mark == 'update') {
+    		$employee_id = Input::get('employee_id');
+    		$employee_props['employee_id'] = $employee_id;
+    		$result = Employee::update_employee($employee_props);
+    		$employee = Employee::get_employee($employee_id)->as_array()[0];
+    		$employee['mark'] = 'update';
+    	} else if ($mark == 'insert') {
+    		$result = Employee::insert_employee($employee_props);
+    		$employee = Employee::get_employee($result[0])->as_array()[0];
+    		$employee['mark'] = 'insert';
+    	}
+    	
+    	return View::forge('complete',$employee);
     }
     
     public function action_insert_page() {
